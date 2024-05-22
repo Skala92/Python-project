@@ -1,5 +1,5 @@
 """
-projekt_2.py: druhý projekt do Engeto Online Python Akademie
+projekt_3.py: Třetí projekt do Engeto Online Python Akademie
 author: Jiri Skalicky
 email: Skalicky.jiri92@gmail.com
 discord: skala7142
