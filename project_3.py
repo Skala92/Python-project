@@ -13,6 +13,13 @@ from bs4 import BeautifulSoup
 URL = "https://volby.cz/pls/ps2017nss/"
 
 def main(url, output_file):
+   """
+    Scrapes election data from the provided URL and writes it into a CSV file.
+
+    Args:
+        url (str): URL of the elections results page to scrape.
+        output_file (str): Name of the output CSV file to save the scraped data.
+    """
     try:
         print("Starting data processing...")
         with open(output_file, mode="w", encoding="utf-8-sig", newline='') as f:
@@ -49,21 +56,49 @@ def main(url, output_file):
         print(f"An error occurred: {str(e)}")
 
 def get_id_name(line, lst):
+    """
+    Extracts region code and location name from a BeautifulSoup line.
+
+    Args:
+        line (BeautifulSoup object): BeautifulSoup line containing region data.
+        lst (list): List to append the extracted data.
+    """
     lst.append(line.find("a").string)
     lst.append(line.parent.find_all()[2].string)
     return lst
 
 def get_soup(URL, line):
+    """
+    Retrieves BeautifulSoup object for a specific region's URL.
+
+    Args:
+        URL (str): Base URL for the election results page.
+        line (BeautifulSoup object): BeautifulSoup line containing region data.
+    """
     region_url = requests.get(URL + line.find("a").attrs["href"])
     return BeautifulSoup(region_url.text, "html.parser")
 
 def get_voters(region_results, lst):
+    """
+    Extracts registered voters, envelopes, and valid votes from region results.
+
+    Args:
+        region_results (BeautifulSoup object): BeautifulSoup object containing region results.
+        lst (list): List to append the extracted data.
+    """
     lst.append(region_results.find("td", {"class": "cislo", "headers": "sa2"}).string)
     lst.append(region_results.find("td", {"class": "cislo", "headers": "sa3"}).string)
     lst.append(region_results.find("td", {"class": "cislo", "headers": "sa6"}).string)
     return lst
 
 def get_party_votes(parties, lst):
+    """
+    Extracts votes for each party from the region's party list.
+
+    Args:
+        parties (BeautifulSoup object): BeautifulSoup object containing party data.
+        lst (list): List to append the extracted data.
+    """
     for line in parties:
         if not line.find("th"):
             lst.append(line.find_all("td", {"class": "cislo"})[1].string)
