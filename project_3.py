@@ -10,6 +10,8 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
+URL = "https://volby.cz/pls/ps2017nss/"
+
 def main(url, output_file):
     """
     Scrapes election data from the provided URL and writes it into a CSV file.
@@ -68,7 +70,7 @@ def get_id_name(line, lst):
     lst.append(line.parent.find_all()[2].string)
     return lst
 
-def get_soup(base_url, line):
+def get_soup(URL, line):
     """
     Retrieves BeautifulSoup object for a specific region's URL.
 
@@ -79,7 +81,7 @@ def get_soup(base_url, line):
     Returns:
         BeautifulSoup object: BeautifulSoup object of the region's URL.
     """
-    region_url = requests.get(base_url + line.find("a").attrs["href"])
+    region_url = requests.get(URL + line.find("a").attrs["href"])
     return BeautifulSoup(region_url.text, "html.parser")
 
 def get_voters(region_results, lst):
