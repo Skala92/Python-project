@@ -75,7 +75,7 @@ def get_soup(URL, line):
     Retrieves BeautifulSoup object for a specific region's URL.
 
     Args:
-        base_url (str): Base URL for the election results page.
+        URL (str): URL for the election results page.
         line (BeautifulSoup object): BeautifulSoup line containing region data.
 
     Returns:
