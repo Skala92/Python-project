@@ -112,9 +112,15 @@ def get_party_votes(parties, lst):
         list: List containing the extracted votes for each party.
     """
     for line in parties:
-        if not line.find("th"):
-            lst.append(line.find_all("td", {"class": "cislo"})[1].string)
+        try:
+            if not line.find("th"):
+                columns = line.find_all("td")
+                votes = columns[2].text.strip()
+                lst.append(votes)
+        except IndexError:
+            print(f"Error extracting party votes: Index out of range for line {line}")
     return lst
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Elections Scraper')
